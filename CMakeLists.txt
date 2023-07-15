@@ -21,6 +21,7 @@ set(PROJECT_SOURCES
         mainwindow.ui
         lib.h
         lib.cpp
+        prettyprint.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
