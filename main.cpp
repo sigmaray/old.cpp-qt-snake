@@ -1,9 +1,11 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include "lib.h"
 
 int main(int argc, char *argv[])
 {
+    Lib::HelloWorld();
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

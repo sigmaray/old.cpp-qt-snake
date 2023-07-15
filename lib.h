@@ -6,6 +6,7 @@ class Lib
 {
 public:
     Lib();
+    static void HelloWorld();
 };
 
 #endif // LIB_H
