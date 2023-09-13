@@ -69,7 +69,7 @@ jobs:
             #   python3 -m PyInstaller editor.py --noconsole --add-data "icons;icons" --name editor --noconfirm;
             #   cd dist;
             #   7z -mx9 a editor-windows.zip editor\;
-            CMD_BUILD: >
+            CMD_BUILD: |
                 dir build
                 copy build\Release\cpp-qt-snake.exe build\
             # OUT_FILE_NAME: editor-windows.zip
