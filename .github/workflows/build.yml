@@ -95,8 +95,8 @@ jobs:
     - name: Build
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}    
-    # - name: Build with pyinstaller for ${{matrix.TARGET}}
-    #   run: ${{matrix.CMD_BUILD}}
+    - name: Build with pyinstaller for ${{matrix.TARGET}}
+      run: ${{matrix.CMD_BUILD}}
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
       with:
