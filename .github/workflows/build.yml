@@ -6,6 +6,10 @@ on:
     tags:
       - 'r-*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
 jobs:
 
   create-release:
@@ -43,37 +47,52 @@ jobs:
                 python3 -m PyInstaller editor.py --noconsole --add-data "icons:icons" --name editor --noconfirm &&
                 cd dist/ &&
                 zip -r9 editor-linux editor/
-            OUT_FILE_NAME: editor-linux.zip
-            ASSET_MIME: application/zip
+            # OUT_FILE_NAME: editor-linux.zip
+            OUT_FILE_NAME: cpp-qt-snake
+            # ASSET_MIME: application/zip
+            ASSET_MIME: application/octet-stream
           - os: macos-12
             TARGET: macos
             CMD_BUILD: >
                 python3 -m PyInstaller editor.py --noconsole --add-data "icons:icons" --name editor --noconfirm &&
                 cd dist/ &&
                 zip -r9 editor-osx editor/
-            OUT_FILE_NAME: editor-osx.zip
-            ASSET_MIME: application/zip
+            # OUT_FILE_NAME: editor-osx.zip
+            OUT_FILE_NAME: cpp-qt-snake
+            # ASSET_MIME: application/zip
+            ASSET_MIME: application/octet-stream
           - os: windows-2022
             TARGET: windows
             CMD_BUILD: |
               python3 -m PyInstaller editor.py --noconsole --add-data "icons;icons" --name editor --noconfirm;
               cd dist;
               7z -mx9 a editor-windows.zip editor\;
-            OUT_FILE_NAME: editor-windows.zip
-            ASSET_MIME: application/zip
+            # OUT_FILE_NAME: editor-windows.zip
+            OUT_FILE_NAME: cpp-qt-snake.exe
+            # ASSET_MIME: application/zip
+            ASSET_MIME: application/octet-stream
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
-    - name: Build with pyinstaller for ${{matrix.TARGET}}
-      run: ${{matrix.CMD_BUILD}}
+    # - name: Set up Python 3.8
+    #   uses: actions/setup-python@v2
+    #   with:
+    #     python-version: 3.8
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v3.2.1
+    # - name: Install dependencies
+    #   run: |
+    #     python -m pip install --upgrade pip
+    #     pip install -r requirements.txt
+    #     pip install -r requirements-dev.txt
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+    - name: Build
+      # Build your program with the given configuration
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}    
+    # - name: Build with pyinstaller for ${{matrix.TARGET}}
+    #   run: ${{matrix.CMD_BUILD}}
     - name: Load Release URL File from release job
       uses: actions/download-artifact@v1
       with:
@@ -91,6 +110,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.get_release_info.outputs.upload_url }}
-        asset_path: ./dist/${{ matrix.OUT_FILE_NAME}}
+        # asset_path: ./dist/${{ matrix.OUT_FILE_NAME}}
+        asset_path: ./build/${{ matrix.OUT_FILE_NAME}}
         asset_name: ${{ matrix.OUT_FILE_NAME}}
         asset_content_type: ${{ matrix.ASSET_MIME}}
