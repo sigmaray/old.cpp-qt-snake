@@ -43,10 +43,12 @@ jobs:
         include:
           - os: ubuntu-22.04
             TARGET: linux
+            # CMD_BUILD: >
+            #     python3 -m PyInstaller editor.py --noconsole --add-data "icons:icons" --name editor --noconfirm &&
+            #     cd dist/ &&
+            #     zip -r9 editor-linux editor/
             CMD_BUILD: >
-                python3 -m PyInstaller editor.py --noconsole --add-data "icons:icons" --name editor --noconfirm &&
-                cd dist/ &&
-                zip -r9 editor-linux editor/
+                ls -lah build
             # OUT_FILE_NAME: editor-linux.zip
             OUT_FILE_NAME: cpp-qt-snake
             # ASSET_MIME: application/zip
@@ -63,10 +65,12 @@ jobs:
           #   ASSET_MIME: application/octet-stream
           - os: windows-2022
             TARGET: windows
-            CMD_BUILD: |
-              python3 -m PyInstaller editor.py --noconsole --add-data "icons;icons" --name editor --noconfirm;
-              cd dist;
-              7z -mx9 a editor-windows.zip editor\;
+            # CMD_BUILD: |
+            #   python3 -m PyInstaller editor.py --noconsole --add-data "icons;icons" --name editor --noconfirm;
+            #   cd dist;
+            #   7z -mx9 a editor-windows.zip editor\;
+            CMD_BUILD: >
+                dir build
             # OUT_FILE_NAME: editor-windows.zip
             OUT_FILE_NAME: cpp-qt-snake.exe
             # ASSET_MIME: application/zip
