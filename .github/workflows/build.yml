@@ -51,16 +51,16 @@ jobs:
             OUT_FILE_NAME: cpp-qt-snake
             # ASSET_MIME: application/zip
             ASSET_MIME: application/octet-stream
-          - os: macos-12
-            TARGET: macos
-            CMD_BUILD: >
-                python3 -m PyInstaller editor.py --noconsole --add-data "icons:icons" --name editor --noconfirm &&
-                cd dist/ &&
-                zip -r9 editor-osx editor/
-            # OUT_FILE_NAME: editor-osx.zip
-            OUT_FILE_NAME: cpp-qt-snake
-            # ASSET_MIME: application/zip
-            ASSET_MIME: application/octet-stream
+          # - os: macos-12
+          #   TARGET: macos
+          #   CMD_BUILD: >
+          #       python3 -m PyInstaller editor.py --noconsole --add-data "icons:icons" --name editor --noconfirm &&
+          #       cd dist/ &&
+          #       zip -r9 editor-osx editor/
+          #   # OUT_FILE_NAME: editor-osx.zip
+          #   OUT_FILE_NAME: cpp-qt-snake
+          #   # ASSET_MIME: application/zip
+          #   ASSET_MIME: application/octet-stream
           - os: windows-2022
             TARGET: windows
             CMD_BUILD: |
